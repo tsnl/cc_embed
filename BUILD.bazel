@@ -1,7 +1,11 @@
+load("@//:bazel/defs.bzl", "cc_embed")
 load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")  # do not edit this line
 
 compile_commands_targets = [
     "cc_embed_codegen",
+    "hello_world",
+    "hello_binary_512",
+    "test",
 ]
 
 cc_binary(
@@ -9,6 +13,36 @@ cc_binary(
     srcs = ["src/tsnl/cc_embed_codegen/main.cpp"],
     visibility = ["//visibility:public"],
     deps = ["@tsnl.log"],
+)
+
+#
+# Tests:
+#
+
+cc_embed(
+    name = "hello_world",
+    append_null_terminator = True,
+    data_file = "data/hello_world.txt",
+)
+
+cc_embed(
+    name = "hello_binary_512",
+    data_file = "data/hello_binary_512.bin",
+)
+
+cc_test(
+    name = "test",
+    srcs = ["test/tsnl/test_embed.cpp"],
+    data = [
+        "data/hello_binary_512.bin",
+        "data/hello_world.txt",
+    ],
+    deps = [
+        ":hello_binary_512",
+        ":hello_world",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
 )
 
 #

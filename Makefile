@@ -27,7 +27,10 @@ format:
 # targets:
 #
 
-default: cc_embed_codegen
+default: cc_embed_codegen test
 
 cc_embed_codegen: 
 	bazelisk build cc_embed_codegen
+
+test:
+	bazelisk test test --cache_test_results=no
