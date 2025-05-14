@@ -4,8 +4,8 @@ This rule generates C++ source and header files with the contents of data files 
 """
 
 def cc_embed(name, data_file, visibility = ["//visibility:private"]):
-    src = "{}.cpp".format(name)
-    hdr = "{}.hpp".format(name)
+    src = "src/tsnl/cc_embed/{}.cpp".format(name)
+    hdr = "include/tsnl/cc_embed/{}.hpp".format(name)
     var_name = name.replace("-", "_").replace(".", "_")
 
     native.genrule(
@@ -20,4 +20,5 @@ def cc_embed(name, data_file, visibility = ["//visibility:private"]):
         srcs = [src],
         hdrs = [hdr],
         visibility = visibility,
+        includes = ["include"],
     )
