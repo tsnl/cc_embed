@@ -27,4 +27,7 @@ format:
 # targets:
 #
 
-default: # TODO: define your targets here
+default: cc_embed_codegen
+
+cc_embed_codegen: 
+	bazelisk build cc_embed_codegen

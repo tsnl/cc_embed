@@ -1,8 +1,15 @@
 load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")  # do not edit this line
 
 compile_commands_targets = [
-    # TODO: Add your targets here for inclusion in the compile_commands.json file.
+    "cc_embed_codegen",
 ]
+
+cc_binary(
+    name = "cc_embed_codegen",
+    srcs = ["src/tsnl/cc_embed_codegen/main.cpp"],
+    visibility = ["//visibility:public"],
+    deps = ["@tsnl.log"],
+)
 
 #
 # from cpp_base: do not edit this section.
