@@ -53,10 +53,11 @@ std::span<const std::byte> {0}(reinterpret_cast<const std::byte*>({0}_storage.da
 )cpp";
 
 auto main(int argc, char const* argv[]) -> int {
-    if (argc != 5) {
-        log::fatal() << "Incorrect CLI args: "
-                     << "usage: " << argv[0]
-                     << " <input_file> <variable_name> <output_header_file> <output_source_file>";
+    if (argc != 6) {
+        log::fatal(
+        ) << "Incorrect CLI args: "
+          << "usage: " << argv[0]
+          << " <input_file> <variable_name> <output_header_file> <output_source_file> <append_null_terminator>";
         std::unreachable();
     }
 
@@ -64,6 +65,7 @@ auto main(int argc, char const* argv[]) -> int {
     std::string var_name = argv[2];
     std::filesystem::path output_header_file = argv[3];
     std::filesystem::path output_source_file = argv[4];
+    bool append_null_terminator = strcmp(argv[5], "1") == 0;
 
     // Validate variable name:
     {
@@ -88,9 +90,17 @@ auto main(int argc, char const* argv[]) -> int {
         auto bin_size = bin.tellg();
         bin.seekg(0, std::ios::beg);
 
+        // Account for null terminator in size if requested:
+        if (append_null_terminator) {
+            bin_size += 1;
+        }
+
         // Read bin data:
         bin_data.resize(bin_size);
         bin.read(reinterpret_cast<char*>(bin_data.data()), bin_size);
+        if (append_null_terminator) {
+            bin_data.back() = std::byte{0};
+        }
     }
 
     // Write C++ header file:
