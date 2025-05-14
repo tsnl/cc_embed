@@ -1,5 +1,5 @@
-load("@//:bazel/defs.bzl", "cc_embed")
 load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")  # do not edit this line
+load("@tsnl.cc_embed//:bazel/defs.bzl", "cc_embed")
 
 compile_commands_targets = [
     "cc_embed_codegen",
